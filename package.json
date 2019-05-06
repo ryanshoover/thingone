@@ -9,5 +9,8 @@
   "scripts": {
     "lint": "echo No lint defined",
     "build": "echo No build defined"
+  },
+  "dependencies": {
+    "gulp": "^4.0.1"
   }
 }
