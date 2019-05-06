@@ -17,6 +17,7 @@
     ],
     "require": {
         "wpackagist-plugin/wordpress-seo": "^11.1",
-        "wpackagist-plugin/woocommerce": "^3.6"
+        "wpackagist-plugin/woocommerce": "^3.6",
+        "wpackagist-plugin/rollbar": "^2.6"
     }
 }
