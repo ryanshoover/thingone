@@ -49,7 +49,7 @@ workflows:
     regression:
         jobs:
             - wpengine/backstop:
-                config: tests/backstop.js
+                config: tests/_backstop/index.js
                 filters:
                     branches:
                         only:

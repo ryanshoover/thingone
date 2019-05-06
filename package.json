@@ -1,0 +1,13 @@
+{
+  "name": "thingone",
+  "version": "0.1.0",
+  "description": "Test setup for ryanshoover/wpengine orb",
+  "main": "index.js",
+  "repository": "git@github.com:ryanshoover/thingone.git",
+  "author": "Ryan Hoover <ryanshoover@gmail.com>",
+  "license": "GPL3",
+  "scripts": {
+    "lint": "echo No lint defined",
+    "build": "echo No build defined"
+  }
+}

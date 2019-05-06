@@ -1,18 +1,18 @@
-const basicConfig = require("./basicConfig");
+const config = require("./config");
 const THREE_SECONDS_IN_MS = 3000;
 const scenarios = [];
 const viewports = [];
 
-basicConfig.relativeUrls.map(relativeUrl => {
+config.relativeUrls.map(relativeUrl => {
 	scenarios.push({
 		label: relativeUrl,
-		url: `${basicConfig.baseUrl}${relativeUrl}`,
+		url: `${config.baseUrl}${relativeUrl}`,
 		delay: THREE_SECONDS_IN_MS,
 		requireSameDimensions: false,
 	});
 });
 
-basicConfig.viewports.map(viewport => {
+config.viewports.map(viewport => {
 	if (viewport === "phone") {
 		pushViewport(viewport, 320, 480);
 	}
@@ -33,7 +33,7 @@ function pushViewport(viewport, width, height) {
 }
 
 module.exports = {
-	id: basicConfig.projectId,
+	id: config.projectId,
 	viewports,
 	scenarios,
 	paths: {
