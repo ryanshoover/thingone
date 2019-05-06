@@ -1,0 +1,22 @@
+{
+    "name": "ryanshoover/thingone",
+    "description": "Test system for WPE orb",
+    "type": "project",
+    "license": "GPL3",
+    "authors": [
+        {
+            "name": "Ryan Hoover",
+            "email": "ryanshoover@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type":"composer",
+            "url":"https://wpackagist.org"
+        }
+    ],
+    "require": {
+        "wpackagist-plugin/wordpress-seo": "^11.1",
+        "wpackagist-plugin/woocommerce": "^3.6"
+    }
+}
