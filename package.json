@@ -5,10 +5,11 @@
   "main": "index.js",
   "repository": "git@github.com:ryanshoover/thingone.git",
   "author": "Ryan Hoover <ryanshoover@gmail.com>",
-  "license": "GPL3",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "lint": "echo No lint defined",
-    "build": "echo No build defined"
+    "build": "echo No build defined",
+    "codecept": "docker-compose -f tests/_docker/docker-compose.yml run wpbrowser"
   },
   "dependencies": {
     "gulp": "^4.0.1"
