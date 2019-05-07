@@ -4,7 +4,7 @@ description: |
     Demo site deploy using the ryanshoover/wpengine CircleCI orb.
 
 orbs:
-    wpengine: ryanshoover/wpengine@0.2.3
+    wpengine: ryanshoover/wpengine@0.2.4
 
 workflows:
     version: 2
