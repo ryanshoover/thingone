@@ -51,12 +51,12 @@ export GITHUB_USER="$GITHUB_ACTOR"
 # Find existing PR
 PR_NUM=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%I")
 
-if [ PR_NUM ]; then
+if [ $PR_NUM ]; then
   # If we have an existing PR, update it.
   PR_BODY=updateBody $(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%b")
 
   COMMAND="hub api \
-    repos/${GITHUB_WORKSPACE}/${GITHUB_REPOSITORY}/pulls/${PR_NUM} \
+    repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM} \
     --method PATCH \
     --raw-field \"body=${PR_BODY}\" \
     "
