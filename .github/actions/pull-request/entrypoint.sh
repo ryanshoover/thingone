@@ -53,8 +53,7 @@ PR_NUM=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "
 
 if [ $PR_NUM ]; then
   # If we have an existing PR, update it.
-  PR_BODY=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%b")
-  PR_BODY=updateBody $PR_BODY
+  PR_BODY=updateBody $(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%b")
 
   COMMAND="hub api \
     repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM} \
@@ -64,8 +63,7 @@ if [ $PR_NUM ]; then
 
 else
   # If we don't have a PR, create it.
-  PR_BODY='## Automated Deploy Pull Request'
-  PR_BODY=updateBody $PR_BODY
+  PR_BODY=updateBody "\#\# Automated Deploy Pull Request"
 
   COMMAND="hub pull-request \
     --base $DESTINATION_BRANCH \
