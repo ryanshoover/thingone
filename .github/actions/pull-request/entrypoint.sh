@@ -43,6 +43,7 @@ export GITHUB_USER="$GITHUB_ACTOR"
 PR_NUM=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%I")
 
 if [ $PR_NUM ]; then
+  echo "UPDATING\n\n"
   # If we have an existing PR, update it.
   SOURCE_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sB")
   DESTINATION_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sH")
@@ -57,19 +58,19 @@ if [ $PR_NUM ]; then
     "
 
 else
+  echo "CREATING\n\n"
   # If we don't have a PR, create it.
   SOURCE_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sB")
   DESTINATION_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sH")
   PRS=$( git log --oneline --grep="Merge pull request" $SOURCE_HASH..$DESTINATION_HASH | grep -o "#[[:digit:]]*" )
-  PR_BODY="## Automated Deploy Pull Request\n\n$PRS"
-  echo $PR_BODY
 
   COMMAND="hub pull-request \
     --base $DESTINATION_BRANCH \
     --head $SOURCE_BRANCH \
     --no-edit \
-    --message \"${DESTINATION_BRANCH^} ← ${SOURCE_BRANCH^}\" \
-    --mesage \"$PR_BODY\" \
+    --message \"${DESTINATION_BRANCH} ← ${SOURCE_BRANCH}\" \
+    --message \"## Automated Deploy Pull Request\" \
+    --mesage \"$PRS\" \
     --labels \"deploy\" \
     --assign \"$GITHUB_ACTOR\""
 
