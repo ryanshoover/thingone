@@ -40,10 +40,10 @@ fi
 export GITHUB_USER="$GITHUB_ACTOR"
 
 # Find existing PR
-PR_NUM=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%I")
+PR_NUM=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%I")
 
 if [ $PR_NUM ]; then
-  echo "UPDATING\n\n"
+  echo "UPDATING"
   # If we have an existing PR, update it.
   SOURCE_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sB")
   DESTINATION_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sH")
@@ -58,7 +58,7 @@ if [ $PR_NUM ]; then
     "
 
 else
-  echo "CREATING\n\n"
+  echo "CREATING"
   # If we don't have a PR, create it.
   SOURCE_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sB")
   DESTINATION_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sH")
@@ -70,7 +70,7 @@ else
     --no-edit \
     --message \"${DESTINATION_BRANCH} ← ${SOURCE_BRANCH}\" \
     --message \"## Automated Deploy Pull Request\" \
-    --mesage \"$PRS\" \
+    --message \"$PRS\" \
     --labels \"deploy\" \
     --assign \"$GITHUB_ACTOR\""
 
