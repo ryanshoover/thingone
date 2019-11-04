@@ -9,15 +9,23 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
+    - name: Identify lint commands
+      id: commands
+      run: |
+        [[ -f composer.json && $(composer run --list | grep "\btest\b") ]]
+        echo ::set-output name=composer::$?
+        [[ -f package.json && $(yarn run | grep "\btest\b") ]]
+        echo ::set-output name=package::$?
+
     - name: Run composer lint
-      run: 
+      if: steps.commands.outputs.composer == 0
+      run: |
         composer validate
         composer install --prefer-dist --no-progress --no-suggest
         composer run-script lint
-      if: -f composer.json && $(composer run --list | grep "\blint\b")
 
     - name: Run package lint
-      run: 
+      if: steps.commands.outputs.package == 0
+      run: |
         yarn install --emoji false --no-progress --non-interactive
         yarn run lint
-      if: -f package.json && $(yarn run | grep "\blint\b")
