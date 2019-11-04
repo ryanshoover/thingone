@@ -3,7 +3,7 @@
 set -e
 
 updateBody () {
-  if [[ $SOURCE_BRANCH =~ ^[a-zA-Z]+\-[[:digit:]]+ ]]; then
+  if [[ $SOURCE_BRANCH == 'development' ]]; then
     TICKET=$(echo $SOURCE_BRANCH | sed -n 's/^([a-zA-Z]+\-[[:digit:]])+).*/\1/p')
     PR_BODY="$1\n\n[${TICKET^^}]"
   fi;
