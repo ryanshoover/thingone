@@ -12,20 +12,20 @@ jobs:
     - name: Identify lint commands
       id: commands
       run: |
-        if [[ -f composer.json && $(composer run --list | grep "\blint\b") ]]; then c=true; else c=false; fi
-        if [[ -f package.json && $(yarn run --non-interactive | grep "\blint\b") ]]; then p=true; else p=false; fi
+        if [[ -f composer.json && $(composer run --list | grep "\blint\b") ]]; then c=1; else c=0; fi
+        if [[ -f package.json && $(yarn run --non-interactive | grep "\blint\b") ]]; then p=1; else p=0; fi
         echo ::set-output name=composer::$c
         echo ::set-output name=package::$p
 
     - name: Run composer lint
-      if: steps.commands.outputs.composer
+      if: steps.commands.outputs.composer == 1
       run: |
         composer validate
         composer install --prefer-dist --no-progress --no-suggest
         composer run-script lint
 
     - name: Run package lint
-      if: steps.commands.outputs.package
+      if: steps.commands.outputs.package == 1
       run: |
         yarn install --emoji false --no-progress --non-interactive
         yarn run lint
