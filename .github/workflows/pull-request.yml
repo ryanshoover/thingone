@@ -1,0 +1,34 @@
+
+on:
+  pull_request
+
+jobs:
+  pull-request:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Set up PR data
+      id: data
+      run: |
+        case ${{ github.base_ref }} in
+        "development")
+          destination="staging"
+          ;;
+        "staging")
+          destination="master"
+          ;;
+        esac
+        echo ::set-output name=source::${{ github.base_ref }}
+        echo ::set-output name=destination::$destination
+
+    - name: Create pull request
+      uses: repo-sync/pull-request@v2
+      with:
+        source_branch: steps.data.outputs.source
+        destination_branch: steps.data.outputs.destination
+        pr_title: "${{ steps.data.outputs.destination }} ← ${{ steps.data.outputs.source }}"
+        pr_body: ":crown: *An automated PR*"  # Full markdown support, requires pr_title to be set
+        pr_assignee: github.actor
+        pr_label: "deploy"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
