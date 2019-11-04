@@ -49,7 +49,7 @@ PR_NUM=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "
 
 if [ $PR_NUM ]; then
   # If we have an existing PR, update it.
-  PR_BODY=getBodyCopy
+  PR_BODY=$( getBodyCopy )
 
   echo $PR_BODY
 
@@ -61,7 +61,7 @@ if [ $PR_NUM ]; then
 
 else
   # If we don't have a PR, create it.
-  PR_BODY=getBodyCopy
+  PR_BODY=$( getBodyCopy )
 
   echo $PR_BODY
 
