@@ -2,13 +2,9 @@
 
 set -e
 
-updateBody () {
-  if [[ $SOURCE_BRANCH =~ ^[a-zA-Z]+\-[[:digit:]]+ ]]; then
-    TICKET=$(echo $SOURCE_BRANCH | sed -n 's/^([a-zA-Z]+\-[[:digit:]])+).*/\1/p')
-    PR_BODY="$1\n\n[${TICKET^^}]"
-  fi;
-
-  return PR_BODY
+getBodyCopy () {
+  PRS=$( git log --oneline --grep="Merge pull request" $(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sB")..$(hub pr list --head development --base staging --format "%sH") | grep -o "#[[:digit:]]*" )
+  BODY="## Automated Deploy Pull Request\n\n$PRS"
 }
 
 if [[ -z "$GITHUB_TOKEN" ]]; then
@@ -53,7 +49,7 @@ PR_NUM=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "
 
 if [ $PR_NUM ]; then
   # If we have an existing PR, update it.
-  PR_BODY=updateBody $(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%b")
+  PR_BODY=getBodyCopy
 
   COMMAND="hub api \
     repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM} \
@@ -63,7 +59,7 @@ if [ $PR_NUM ]; then
 
 else
   # If we don't have a PR, create it.
-  PR_BODY=updateBody "\#\# Automated Deploy Pull Request"
+  PR_BODY=getBodyCopy
 
   COMMAND="hub pull-request \
     --base $DESTINATION_BRANCH \
