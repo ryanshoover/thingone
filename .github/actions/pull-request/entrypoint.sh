@@ -54,7 +54,7 @@ if [ $PR_NUM ]; then
   COMMAND="hub api \
     repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM} \
     --method PATCH \
-    --raw-field \"body=${PR_BODY}\" \
+    --raw-field \"body=$( "$PR_BODY" )\" \
     "
 
 else
