@@ -71,8 +71,9 @@ else
     --message \"${DESTINATION_BRANCH^} ← ${SOURCE_BRANCH^}\" \
     --mesage \"$PR_BODY\" \
     --labels \"deploy\" \
-    --assign \"$GITHUB_ACTOR\" \
-    "
+    --assign \"$GITHUB_ACTOR\""
+
+  echo "$COMMAND"
 fi
 
 echo "$COMMAND"
