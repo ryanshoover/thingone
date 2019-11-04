@@ -56,7 +56,7 @@ if [ PR_NUM ]; then
   PR_BODY=updateBody $(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%b")
 
   COMMAND="hub api \
-    repos/{owner}/{repo}/pulls/${PR_NUM} \
+    repos/${GITHUB_WORKSPACE}/${GITHUB_REPOSITORY}/pulls/${PR_NUM} \
     --method PATCH \
     --raw-field \"body=${PR_BODY}\" \
     "
