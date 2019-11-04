@@ -2,11 +2,6 @@
 
 set -e
 
-getBodyCopy () {
-  PRS=$( git log --oneline --grep="Merge pull request" $(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sB")..$(hub pr list --head development --base staging --format "%sH") | grep -o "#[[:digit:]]*" )
-  BODY="## Automated Deploy Pull Request\n\n$PRS"
-}
-
 if [[ -z "$GITHUB_TOKEN" ]]; then
   echo "Set the GITHUB_TOKEN environment variable."
   exit 1
@@ -49,8 +44,10 @@ PR_NUM=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "
 
 if [ $PR_NUM ]; then
   # If we have an existing PR, update it.
-  PR_BODY=$( getBodyCopy )
-
+  SOURCE_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sB")
+  DESTINATION_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sH")
+  PRS=$( git log --oneline --grep="Merge pull request" $SOURCE_HASH..$DESTINATION_HASH | grep -o "#[[:digit:]]*" )
+  PR_BODY="## Automated Deploy Pull Request\n\n$PRS"
   echo $PR_BODY
 
   COMMAND="hub api \
@@ -61,8 +58,10 @@ if [ $PR_NUM ]; then
 
 else
   # If we don't have a PR, create it.
-  PR_BODY=$( getBodyCopy )
-
+  SOURCE_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sB")
+  DESTINATION_HASH=$(hub pr list --head $SOURCE_BRANCH --base $DESTINATION_BRANCH --format "%sH")
+  PRS=$( git log --oneline --grep="Merge pull request" $SOURCE_HASH..$DESTINATION_HASH | grep -o "#[[:digit:]]*" )
+  PR_BODY="## Automated Deploy Pull Request\n\n$PRS"
   echo $PR_BODY
 
   COMMAND="hub pull-request \
