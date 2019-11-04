@@ -12,8 +12,8 @@ jobs:
     - name: Identify lint commands
       id: commands
       run: |
-        if [[ -f composer.json && $(composer run --list | grep "\btest\b") ]]; then c=true; else c=false; fi
-        if [[ -f package.json && $(yarn run --non-interactive | grep "\btest\b") ]]; then p=true; else p=false; fi
+        if [[ -f composer.json && $(composer run --list | grep "\blint\b") ]]; then c=true; else c=false; fi
+        if [[ -f package.json && $(yarn run --non-interactive | grep "\blint\b") ]]; then p=true; else p=false; fi
         echo ::set-output name=composer::$c
         echo ::set-output name=package::$p
 
