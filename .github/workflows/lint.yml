@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Lint files
 
 on: [push]
 
@@ -12,10 +12,10 @@ jobs:
     - name: Identify lint commands
       id: commands
       run: |
-        [[ -f composer.json && $(composer run --list | grep "\btest\b") ]]
-        echo ::set-output name=composer::$?
-        [[ -f package.json && $(yarn run | grep "\btest\b") ]]
-        echo ::set-output name=package::$?
+        if [[ -f composer.json && $(composer run --list | grep "\btest\b") ]]; then; c=0; else; c=1; fi
+        if [[ -f package.json && $(yarn run --non-interactive | grep "\btest\b") ]]; then; p=0; else; p=1; fi
+        echo ::set-output name=composer::$c
+        echo ::set-output name=package::$p
 
     - name: Run composer lint
       if: steps.commands.outputs.composer == 0
