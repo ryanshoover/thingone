@@ -12,29 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: Set up PR data
-      id: data
-      run: |
-        case ${{ github.ref }} in
-        "refs/heads/development")
-          source="development"
-          destination="staging"
-          ;;
-        "refs/heads/staging")
-          source="staging"
-          destination="master"
-          ;;
-        esac
-        echo ::set-output name=source::$source
-        echo ::set-output name=destination::$destination
-
     - name: Create pull request
-      uses: repo-sync/pull-request@v2
+      uses: ./.github/actions/pull-request
       with:
-        source_branch: ${{ steps.data.outputs.source }}
-        destination_branch: ${{ steps.data.outputs.destination }}
-        pr_title: "${{ steps.data.outputs.destination }} ← ${{ steps.data.outputs.source }}"
-        pr_body: ":crown: *An automated PR*"  # Full markdown support, requires pr_title to be set
         pr_assignee: ${{ github.actor }}
-        pr_label: "deploy"
         github_token: ${{ secrets.GITHUB_TOKEN }}
