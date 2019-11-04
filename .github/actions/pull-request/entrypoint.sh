@@ -51,6 +51,8 @@ if [ $PR_NUM ]; then
   # If we have an existing PR, update it.
   PR_BODY=getBodyCopy
 
+  echo $PR_BODY
+
   COMMAND="hub api \
     repos/${GITHUB_REPOSITORY}/pulls/${PR_NUM} \
     --method PATCH \
@@ -60,6 +62,8 @@ if [ $PR_NUM ]; then
 else
   # If we don't have a PR, create it.
   PR_BODY=getBodyCopy
+
+  echo $PR_BODY
 
   COMMAND="hub pull-request \
     --base $DESTINATION_BRANCH \
