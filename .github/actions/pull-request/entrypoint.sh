@@ -47,7 +47,7 @@ if [ PR_NUM ]; then
   PR_BODY=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%b")
 
   if [[ $SOURCE_BRANCH =~ ^([a-zA-Z]+\-[[:digit:]]+) ]]; then
-    PR_BODY="${PR_BODY}\n\n[${BASH_REMATCH[1]}]"
+    PR_BODY="${PR_BODY}\n\n[${BASH_REMATCH[1]^^}]"
   fi;
 
 
@@ -62,7 +62,7 @@ else
   PR_BODY="## Automated Deploy Pull Request"
 
   if [[ $SOURCE_BRANCH =~ ^([a-zA-Z]+\-[[:digit:]]+) ]]; then
-    PR_BODY="${PR_BODY}\n\n[${BASH_REMATCH[1]}]"
+    PR_BODY="${PR_BODY}\n\n[${BASH_REMATCH[1]^^}]"
   fi;
 
   COMMAND="hub pull-request \
