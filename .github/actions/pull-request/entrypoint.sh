@@ -2,10 +2,10 @@
 
 set -e
 
-updateBody( PR_BODY ) {
+updateBody () {
   if [[ $SOURCE_BRANCH =~ ^[a-zA-Z]+\-[[:digit:]]+ ]]; then
     TICKET=$(echo $SOURCE_BRANCH | sed -n 's/^([a-zA-Z]+\-[[:digit:]])+).*/\1/p')
-    PR_BODY="${PR_BODY}\n\n[${TICKET^^}]"
+    PR_BODY="$1\n\n[${TICKET^^}]"
   fi;
 
   return PR_BODY
