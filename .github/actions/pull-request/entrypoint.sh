@@ -2,6 +2,15 @@
 
 set -e
 
+updateBody( PR_BODY ) {
+  if [[ $SOURCE_BRANCH =~ ^[a-zA-Z]+\-[[:digit:]]+ ]]; then
+    TICKET=$(echo $SOURCE_BRANCH | sed -n 's/^([a-zA-Z]+\-[[:digit:]])+).*/\1/p')
+    PR_BODY="${PR_BODY}\n\n[${TICKET^^}]"
+  fi;
+
+  return PR_BODY
+}
+
 if [[ -z "$GITHUB_TOKEN" ]]; then
   echo "Set the GITHUB_TOKEN environment variable."
   exit 1
@@ -46,10 +55,7 @@ if [ PR_NUM ]; then
   # If we have an existing PR, update it.
   PR_BODY=$(hub pr list --head $DESTINATION_BRANCH --base $SOURCE_BRANCH --format "%b")
 
-  if [[ $SOURCE_BRANCH =~ ^([a-zA-Z]+\-[[:digit:]]+) ]]; then
-    PR_BODY="${PR_BODY}\n\n[${BASH_REMATCH[1]^^}]"
-  fi;
-
+  PR_BODY=updateBody( PR_BODY )
 
   COMMAND="hub api \
     repos/{owner}/{repo}/pulls/${PR_NUM} \
@@ -60,10 +66,7 @@ if [ PR_NUM ]; then
 else
   # If we don't have a PR, create it.
   PR_BODY="## Automated Deploy Pull Request"
-
-  if [[ $SOURCE_BRANCH =~ ^([a-zA-Z]+\-[[:digit:]]+) ]]; then
-    PR_BODY="${PR_BODY}\n\n[${BASH_REMATCH[1]^^}]"
-  fi;
+  PR_BODY=updateBody( PR_BODY )
 
   COMMAND="hub pull-request \
     --base $DESTINATION_BRANCH \
