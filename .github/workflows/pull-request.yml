@@ -16,14 +16,16 @@ jobs:
       id: data
       run: |
         case ${{ github.ref }} in
-        "development")
+        "refs/heads/development")
+          source="development"
           destination="staging"
           ;;
-        "staging")
+        "refs/heads/staging")
+          source="staging"
           destination="master"
           ;;
         esac
-        echo ::set-output name=source::${{ github.ref }}
+        echo ::set-output name=source::$source
         echo ::set-output name=destination::$destination
 
     - name: Create pull request
