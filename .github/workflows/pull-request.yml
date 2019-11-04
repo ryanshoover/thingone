@@ -1,6 +1,10 @@
+name: Create Deploy PR
 
 on:
-  pull_request
+  push:
+    branches:
+    - development
+    - staging
 
 jobs:
   pull-request:
@@ -11,7 +15,7 @@ jobs:
     - name: Set up PR data
       id: data
       run: |
-        case ${{ github.base_ref }} in
+        case ${{ github.ref }} in
         "development")
           destination="staging"
           ;;
@@ -19,7 +23,7 @@ jobs:
           destination="master"
           ;;
         esac
-        echo ::set-output name=source::${{ github.base_ref }}
+        echo ::set-output name=source::${{ github.ref }}
         echo ::set-output name=destination::$destination
 
     - name: Create pull request
